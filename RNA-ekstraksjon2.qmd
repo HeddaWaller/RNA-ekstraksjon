@@ -1,5 +1,7 @@
 
 ```{r}
+#| label: qpcr
+#| tbl-cap: "Resultat fra qPCR"
 #| warning: false
 #| echo: false
 
@@ -22,9 +24,6 @@ df[numeric_cols] <- lapply(df[numeric_cols], function(x) as.numeric(gsub("[*]", 
 
 gt_table <- df %>%
   gt() %>%
-  tab_header(
-    title = "Resultat fra qPCR"
-  ) %>%
   fmt_number(
     columns = vars(Ct1:CV_prosent),
     decimals = 2
@@ -35,5 +34,77 @@ gt_table <- df %>%
 
 gt_table
 
+```
+
+```{r}
+#| label: tbl-genuttrykk
+#| tbl-cap: "Prosentvis andel genuttrykk for MHC I, IIa og IIx før og etter fem treningsøkter"
+#| warning: false
+#| message: false
+#| echo: false
+
+library(gt)
+
+# Opprett dataframe med dataene
+genuttrykk <- data.frame(
+  Tidspunkt = c("W0", "W2"),
+  MHC_I = c(18.16, 45.54),
+  MHC_IIa = c(57.84, 85.77),
+  MHC_IIx = c(24.01, 3.53)
+)
+
+genuttrykk %>%
+  gt() %>%
+  tab_spanner(
+    label = "Genuttrykk",
+    columns = c(MHC_I, MHC_IIa, MHC_IIx)
+  ) %>%
+  fmt_number(
+    columns = c(MHC_I, MHC_IIa, MHC_IIx),
+    decimals = 2
+  )
+
+#vis tabellen
+genuttrykk
+```
+
+```{r}
+#| label: tbl-mhc-cv
+#| tbl-cap: "Gjennomsnittsverdier og CV for MHC I, IIa og IIx ved W0 og W2"
+#| warning: false
+#| message: false
+#| echo: false
+
+library(gt)
+
+# Opprett data frame med gitt data
+data <- data.frame(
+  Time = c("W0", "W2"),
+  MHC_I_mean = c(18.25, 20.61),
+  MHC_I_STD = c(1.07, 4.85),
+  MHC_I_CV = c(5.8, 23.52),
+  MHC_IIa_mean = c(16.58, 17.61),
+  MHC_IIa_STD = c(1.95, 0.69),
+  MHC_IIa_CV = c(11.77, 3.93),
+  MHC_IIx_mean = c(17.85, 22.21),
+  MHC_IIx_STD = c(0.45, 0.72),
+  MHC_IIx_CV = c(2.51, 3.26)
+)
+
+# Velg bare de kolonnene du ønsker å inkludere i tabellen
+selected_columns <- c("Time", "MHC_I_mean", "MHC_IIa_mean", "MHC_IIx_mean", "MHC_I_CV", "MHC_IIa_CV", "MHC_IIx_CV")
+
+# Opprett gt-tabell uten standardavvik
+MHCCV <- data %>%
+  dplyr::select(all_of(selected_columns)) %>%
+  gt() %>%
+  fmt_number(
+    columns = vars(starts_with("MHC")),
+    decimals = 2
+  ) %>%
+  tab_footnote("Mean = gjennomsnitt, CV = variasjonskoeffesient")
+
+# Vis tabellen
+MHCCV
 ```
 
