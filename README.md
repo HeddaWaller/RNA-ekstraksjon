@@ -1,1 +1,1 @@
-# molekyl-rlab
+# RNA-ekstraksjon
