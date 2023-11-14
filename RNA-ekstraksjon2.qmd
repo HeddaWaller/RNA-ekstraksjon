@@ -1,9 +1,7 @@
 
 ```{r}
-#| echo: false
-#| include: false
 #| warning: false
-#| message: false
+#| echo: false
 
 library(gt)
 library(dplyr)
